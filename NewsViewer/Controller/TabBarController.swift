@@ -31,6 +31,7 @@ final class TabBarController: UITabBarController {
                 
             case .favoriteArticle:
                 let vc = ModuleBuilder.buildFavoriteArticleModule()
+                
                 vc.tabBarItem.image = tab.icon
                 vc.title = tab.title
                 return UINavigationController(rootViewController: vc)
@@ -47,9 +48,9 @@ extension TabBarController {
         var title: String {
             switch self {
             case .newsList:
-                return "News"
+                return "Новости"
             case .favoriteArticle:
-                return "Favorite article"
+                return "Сохраненные новости"
             }
         }
         
