@@ -24,7 +24,6 @@ final class TopArticleCell: UICollectionViewCell {
 
     private let articleTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = TestData.articleTitle
         label.font = .boldSystemFont(ofSize: 21)
         label.textColor = .white
         label.numberOfLines = 0
@@ -34,7 +33,6 @@ final class TopArticleCell: UICollectionViewCell {
     
     private let authorNameLabel: UILabel = {
         let label = UILabel()
-        label.text = TestData.authorName
         label.textColor = .white
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +41,6 @@ final class TopArticleCell: UICollectionViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.text = TestData.date
         label.font = .boldSystemFont(ofSize: 12)
         label.textColor = .white.withAlphaComponent(0.6)
         label.numberOfLines = 0

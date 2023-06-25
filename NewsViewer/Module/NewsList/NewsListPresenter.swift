@@ -11,12 +11,14 @@ final class NewsListPresenter {
     
     //MARK: - Properties
     private weak var view: NewsListController?
-     var networkService: NetworkService
+    private var networkService: NetworkService
     private var router: NewsListRouter
     
     private var topNews: WrappedModel?
     private var latestNews: WrappedModel?
     
+    private var isDataLoading = false
+    private var isNeededToLoadNextCompanies = true
     
     //MARK: - Init
     init(view: NewsListController,
@@ -36,7 +38,6 @@ final class NewsListPresenter {
     func getLatestNews() -> [Article] {
         return latestNews?.results ?? [Article]()
     }
-    
     
     func loadNews() {
         let group = DispatchGroup()
@@ -62,9 +63,32 @@ final class NewsListPresenter {
                                     with: article)
     }
     
+    func loadNewsFromNextPage() {
+        guard !isDataLoading && isNeededToLoadNextCompanies else {
+            return
+        }
+        isDataLoading = true
+        defer { self.isDataLoading = false }
+        
+        networkService.getNewsList(endpoint: .getNextLatestNews(page: latestNews?.nextPage ?? "")) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let success):
+                self.latestNews?.appendItems(success.results)
+                self.latestNews?.updateNextPage(success.nextPage)
+                self.view?.reloadItems()
+            case .failure(let failure):
+                print(failure)
+            }
+        }
+    }
+    
     //MARK: - Private methods
     private func loadTopArticles(completion: @escaping () -> Void) {
-        networkService.getTopNews { result in
+        networkService.getNewsList(endpoint: .getTopNews) { [weak self]
+            result in
+            guard let self else { return }
+            
             switch result {
             case .success(let success):
                 self.topNews = success
@@ -77,7 +101,9 @@ final class NewsListPresenter {
     }
     
     private func loadLatestArticles(completion: @escaping () -> Void) {
-        networkService.getNewsList { result in
+        networkService.getNewsList(endpoint: .getLatestNews) { [weak self] result in
+            guard let self else { return }
+            
             switch result {
             case .success(let success):
                 self.latestNews = success

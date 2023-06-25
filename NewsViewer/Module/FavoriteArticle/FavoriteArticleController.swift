@@ -22,8 +22,6 @@ final class FavoriteArticleController: UIViewController {
         tableView.register(FavoriteArticleCell.self,
                            forCellReuseIdentifier: FavoriteArticleCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
@@ -53,7 +51,7 @@ final class FavoriteArticleController: UIViewController {
     }
 }
 
-//MARK: - UITableViewDataSource
+//MARK: - UITableView DataSource
 extension FavoriteArticleController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter?.getFavoriteNewsCount() ?? 0
@@ -71,7 +69,7 @@ extension FavoriteArticleController: UITableViewDataSource {
     }
 }
 
-//MARK: - UITableViewDelegate
+//MARK: - UITableView Delegate
 extension FavoriteArticleController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {

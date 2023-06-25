@@ -12,8 +12,8 @@ import RealmSwift
 struct WrappedModel: Decodable {
     let status: String
     let totalResults: Int
-    let results: [Article]
-    let nextPage: String
+    var results: [Article]
+    var nextPage: String
 }
 
 // MARK: - Result
@@ -31,6 +31,16 @@ struct Article: Decodable {
         case title, link, creator
         case description, content, pubDate
         case imageURL = "image_url"
+    }
+}
+
+extension WrappedModel {
+    mutating func appendItems(_ items: [Article]) {
+        results.append(contentsOf: items)
+    }
+    
+    mutating func updateNextPage(_ page: String) {
+        nextPage = page
     }
 }
 

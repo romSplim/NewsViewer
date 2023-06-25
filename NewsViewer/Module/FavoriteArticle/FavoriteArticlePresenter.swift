@@ -44,7 +44,6 @@ final class FavoriteArticlePresenter {
     
     func fetchNews() {
         favoriteNews = realmRepository.getNewsList()
-        print(favoriteNews)
         self.view?.reloadTable()
     }
     
@@ -60,5 +59,4 @@ final class FavoriteArticlePresenter {
         guard let view else { return }
         router.pushDetailController(from: view, with: articleDetail)
     }
-    
 }

@@ -9,6 +9,7 @@ import Foundation
 
 enum APIManager {
     case getLatestNews
+    case getNextLatestNews(page: String)
     case getTopNews
     
     typealias HTTPHeaders = [String: String]
@@ -19,9 +20,7 @@ enum APIManager {
     
     private var path: String {
         switch self {
-        case .getLatestNews:
-            return "/api/1/news"
-        case .getTopNews:
+        default:
             return "/api/1/news"
         }
     }
@@ -34,6 +33,10 @@ enum APIManager {
         switch self {
         case .getLatestNews:
             return [URLQueryItem(name: "language", value: "ru")]
+            
+        case .getNextLatestNews(let page):
+            return [URLQueryItem(name: "language", value: "ru"),
+                    URLQueryItem(name: "page", value: page)]
             
         case .getTopNews:
             return [URLQueryItem(name: "language",
@@ -52,7 +55,6 @@ enum APIManager {
     
     func request() -> URLRequest? {
         guard let url = url else { return nil }
-        print(url)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = headers
         return request

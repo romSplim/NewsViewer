@@ -31,8 +31,10 @@ enum NetworkError: String, Error {
 
 extension NetworkError {
     
-    init(statusCode: Int) {
+    init?(statusCode: Int) {
         switch statusCode {
+        case 200:
+            return nil
         case 400:
             self = .parameterMissing
         case 401:

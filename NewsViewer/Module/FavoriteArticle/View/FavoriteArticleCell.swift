@@ -9,6 +9,7 @@ import UIKit
 
 final class FavoriteArticleCell: UITableViewCell {
 
+    //MARK: - Properties
     private let imagePlaceholder = UIImage(named: "placeholder")
     
     private let articleImageView: UIImageView = {
@@ -23,7 +24,6 @@ final class FavoriteArticleCell: UITableViewCell {
     
     private let articleTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = TestData.articleTitle
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -31,7 +31,6 @@ final class FavoriteArticleCell: UITableViewCell {
     
     private let authorNameLabel: UILabel = {
         let label = UILabel()
-        label.text = TestData.authorName
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,7 +39,6 @@ final class FavoriteArticleCell: UITableViewCell {
     private let articleDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
-//        label.text = TestData.articleDescription
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -48,7 +46,6 @@ final class FavoriteArticleCell: UITableViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.text = TestData.date
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -68,29 +65,26 @@ final class FavoriteArticleCell: UITableViewCell {
         return stack
     }()
     
+    //MARK: - Init
     override init(style: UITableViewCell.CellStyle,
                   reuseIdentifier: String?) {
         super.init(style: style,
                    reuseIdentifier: reuseIdentifier)
         
         setupSubviews()
-        contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.black.cgColor
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-    
+    //MARK: - PrepareForReuse
     override func prepareForReuse() {
         super.prepareForReuse()
         articleImageView.image = nil
     }
     
+    //MARK: - Methods
     func configure(with article: Article) {
         if let imageUrl = article.imageURL,
            let url = URL(string: imageUrl) {
@@ -102,11 +96,11 @@ final class FavoriteArticleCell: UITableViewCell {
         }
         
         articleTitleLabel.text = article.title
-        authorNameLabel.text = "Неизвестный источник"
-//        articleDescriptionLabel.text = article.description
+        authorNameLabel.text = article.creator?.first ?? "Неизвестный источник"
         dateLabel.text = article.pubDate
     }
     
+    //MARK: - Private methods
     private func setupSubviews() {
         contentView.addSubview(articleImageView)
         contentView.addSubview(labelsStack)
@@ -124,8 +118,6 @@ final class FavoriteArticleCell: UITableViewCell {
             labelsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             //Adaptive bottom
             labelsStack.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16)
-            
         ])
     }
-
 }

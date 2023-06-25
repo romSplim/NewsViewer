@@ -18,8 +18,7 @@ final class LayoutBuilder {
         
         let groupSize: NSCollectionLayoutSize = .init(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(0.3))
         
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                       subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         group.contentInsets = .init(top: 15,
                                     leading: 15,

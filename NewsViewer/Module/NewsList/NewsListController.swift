@@ -12,41 +12,17 @@ protocol NewsListViewProtocol: AnyObject {
 }
 
 final class NewsListController: UIViewController {
-
+    
     //MARK: - Typealias
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Article>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Article>
     
-    enum SectionType: Int, CaseIterable {
-        case banner
-        case list
-    }
-    
-    struct Section: Hashable, Equatable {
-        let id = UUID()
-        let type: SectionType
-        var headerText: String {
-            switch type {
-            case .banner:
-                return "Технологии"
-            case .list:
-                return "Последние"
-            }
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
-    }
-    
-//    private let sections: [Section] = Section.allCases
-    private let sections = [Section(type: .banner),
-                            Section(type: .list)]
-    
     //MARK: - Properties
     var presenter: NewsListPresenter?
-    var dataSource: DataSource?
+    private var dataSource: DataSource?
     
+    private let sections = [Section(type: .banner),
+                            Section(type: .list)]
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero,
@@ -67,8 +43,6 @@ final class NewsListController: UIViewController {
         setupDiffableDataSource()
         presenter?.loadNews()
         reloadItems()
-        
-        
     }
     
     //MARK: - Private methods
@@ -86,9 +60,9 @@ final class NewsListController: UIViewController {
     }
     
     private func setupDiffableDataSource() {
-       dataSource = DataSource(
-            collectionView: collectionView) { collectionView, indexPath, article  in
-
+        dataSource = DataSource(
+            collectionView: collectionView) { [weak self] collectionView, indexPath, article in
+                guard let self else { return UICollectionViewCell() }
                 let section = self.sections[indexPath.section]
                 switch section.type {
                 case .banner:
@@ -107,10 +81,14 @@ final class NewsListController: UIViewController {
                 }
             }
         
-        dataSource?.supplementaryViewProvider = { collection, kind, indexPath -> UICollectionReusableView? in
+        dataSource?.supplementaryViewProvider = { [weak self] collection, kind, indexPath -> UICollectionReusableView? in
+            guard let self else { return UICollectionReusableView() }
+            
             switch kind {
             case UICollectionView.elementKindSectionHeader:
-                let header = collection.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderReusableView.identifier, for: indexPath) as! HeaderReusableView
+                guard let header = collection.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderReusableView.identifier, for: indexPath) as? HeaderReusableView else {
+                    return UICollectionReusableView()
+                }
                 let headerText = self.sections[indexPath.section].headerText
                 header.setLabelText(headerText)
                 
@@ -123,7 +101,7 @@ final class NewsListController: UIViewController {
     
     private func setupSectionsLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { index, enviroment in
-            print(index)
+            
             let section = self.sections[index]
             switch section.type {
             case .banner:
@@ -145,9 +123,9 @@ final class NewsListController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
-
 }
 
+//MARK: - UICollectionView Delegate
 extension NewsListController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
@@ -157,13 +135,27 @@ extension NewsListController: UICollectionViewDelegate {
         }
         presenter?.showArticleDetail(with: articleDetail)
     }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        willDisplay cell: UICollectionViewCell,
+                        forItemAt indexPath: IndexPath) {
+        
+        guard let section = collectionView.indexPathsForVisibleItems.first?.section else { return
+        }
+        let itemsCount = collectionView.numberOfItems(inSection: section)
+        if indexPath.item == itemsCount - 1 {
+            presenter?.loadNewsFromNextPage()
+        }
+    }
+    
 }
 
 //MARK: - NewsListPresenter delegate
 extension NewsListController: NewsListViewProtocol {
+    
     func reloadItems() {
-        applySnapshot()
+        DispatchQueue.main.async {
+            self.applySnapshot()
+        }
     }
-    
-    
 }
