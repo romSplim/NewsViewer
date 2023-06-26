@@ -26,7 +26,6 @@ final class FavoriteNewsRepository {
     
     func saveArticle(_ article: Article) {
         let object = PersistedArticle.init(article)
-        print(object)
         try? storage.saveOrUpdateObject(object: object)
     }
     

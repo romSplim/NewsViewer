@@ -11,8 +11,6 @@ import Kingfisher
 final class DetailView: UIView {
 
     //MARK: - Properties
-    var onFavoriteButtonTap: () -> Void = {}
-    
     private let articleImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .systemGroupedBackground
@@ -105,7 +103,6 @@ final class DetailView: UIView {
         NSLayoutConstraint.activate([
             articleImageView.topAnchor.constraint(equalTo: topAnchor),
             articleImageView.widthAnchor.constraint(equalTo: widthAnchor),
-//            articleImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
             articleImageView.heightAnchor.constraint(equalToConstant: 300),
             
             labelStack.topAnchor.constraint(equalTo: articleImageView.bottomAnchor, constant: 10),

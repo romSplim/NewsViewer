@@ -28,7 +28,9 @@ final class NetworkService {
             return
         }
         
-        session.dataTask(with: request) { data, response, error in
+        session.dataTask(with: request) { [weak self] data, response, error in
+            guard let self else { return }
+            
             if let data {
                 do {
                     let result = try self.decoder.decode(WrappedModel.self,

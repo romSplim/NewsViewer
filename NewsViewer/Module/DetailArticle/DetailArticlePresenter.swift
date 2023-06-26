@@ -61,7 +61,7 @@ final class DetailArticlePresenter {
     
     func checkIfArticleExist() {
         let articleID = articleDetail.title
-        let photoExist = repository.isFavoriteArticleExist(with: articleID)
-        isArticleLiked = photoExist
+        let articleExist = repository.isFavoriteArticleExist(with: articleID)
+        isArticleLiked = articleExist
     }
 }
