@@ -92,7 +92,7 @@ final class DetailView: UIView {
         }
         
         articleTitleLabel.text = article.title
-        authorLabel.text = "Неизвестный источник"
+        authorLabel.text = article.creator?.joined(separator: ",") ?? "Неизвестный источник"
         dateLabel.text = article.pubDate
         descriptionLabel.text = article.content
     }

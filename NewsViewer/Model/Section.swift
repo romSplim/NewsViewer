@@ -17,7 +17,7 @@ struct Section: Hashable, Equatable {
         case .banner:
             return "Технологии"
         case .list:
-            return "Последние"
+            return "Политика"
         }
     }
     

@@ -32,14 +32,17 @@ enum APIManager {
     private var queryItems: [URLQueryItem] {
         switch self {
         case .getLatestNews:
-            return [URLQueryItem(name: "language", value: "ru")]
+            return [URLQueryItem(name: "category", value: "politics"),
+                URLQueryItem(name: "country", value: "ru")]
             
         case .getNextLatestNews(let page):
-            return [URLQueryItem(name: "language", value: "ru"),
+            return [URLQueryItem(name: "category",
+                                 value: "politics"),
+                URLQueryItem(name: "country", value: "ru"),
                     URLQueryItem(name: "page", value: page)]
             
         case .getTopNews:
-            return [URLQueryItem(name: "language",
+            return [URLQueryItem(name: "country",
                                  value: "ru"),
                     URLQueryItem(name: "category",
                                  value: "technology")]

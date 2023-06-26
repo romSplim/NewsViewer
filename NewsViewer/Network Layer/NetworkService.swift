@@ -22,27 +22,6 @@ final class NetworkService {
     }
     
     //MARK: - Methods
-    
-//    func getTopNews(completion: @escaping (Result<WrappedModel, NetworkError>) -> Void) {
-//        guard let request = APIManager.getTopNews.request() else {
-//            completion(.failure(.invalidURL))
-//            return
-//        }
-//        
-//        session.dataTask(with: request) { data, response, error in
-//            if let data {
-//                do {
-//                    let result = try self.decoder.decode(WrappedModel.self,
-//                                                         from: data)
-//                    completion(.success(result))
-//                } catch let error {
-//                    print(error)
-//                    completion(.failure(.cannotDecode))
-//                }
-//            }
-//        }.resume()
-//    }
-    
     func getNewsList(endpoint: APIManager, completion: @escaping (Result<WrappedModel, NetworkError>) -> Void) {
         guard let request = endpoint.request() else {
             completion(.failure(.invalidURL))

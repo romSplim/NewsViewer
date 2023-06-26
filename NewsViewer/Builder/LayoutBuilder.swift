@@ -21,7 +21,7 @@ final class LayoutBuilder {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         group.contentInsets = .init(top: 15,
-                                    leading: 15,
+                                    leading: 16,
                                     bottom: 20,
                                     trailing: 0)
         

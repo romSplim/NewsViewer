@@ -18,7 +18,8 @@ final class FavoriteArticleController: UIViewController {
     var presenter: FavoriteArticlePresenter?
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero,
+                                    style: .insetGrouped)
         tableView.register(FavoriteArticleCell.self,
                            forCellReuseIdentifier: FavoriteArticleCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
