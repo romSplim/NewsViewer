@@ -4,7 +4,7 @@
 * UIKit
 * MVP + Router
 * Compositional Layout, Diffable Data Source
-* URLSession, Kingfisher, порционная загрузка данных
+* URLSession, Dispatch Group, Kingfisher, порционная загрузка данных
 * Realm для сохранения новостей
 
 
